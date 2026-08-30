@@ -1,0 +1,55 @@
+# Local environments and editor state
+.venv/
+.vscode/
+__pycache__/
+*.py[cod]
+.env
+
+# Separate master's-thesis repository and local scratch space
+preprocessing_thesis/
+work/
+
+# The written report and presentation are maintained separately. This
+# repository contains only the database, analysis, and derived data files.
+reports/
+
+# CourtListener/FJC bulk data are hundreds of gigabytes and are not tracked.
+import/*.csv
+import/*.csv.bz2
+
+# Keep the small project-created race lookup and exclusion diagnostics.
+!import/people_db_race-2026-03-31.csv
+!import/citation-map-2026-03-31_missing_citing.csv
+!import/citations-2026-03-31_missing_cluster.csv
+
+# Thesis-only database extensions retained locally but excluded from this repo.
+import/load_thesis_extensions.sh
+import/schema_thesis_extensions.sql
+python/normalize_fjc_judges.py
+python/build_court_name_map.py
+
+# Thesis-specific derived outputs stored alongside the data-paper outputs.
+cleaned_csv/federal_appeals_*
+cleaned_csv/fjc_appellate_*
+cleaned_csv/gender_mapping_*
+cleaned_csv/gender_by_year_with_nos.csv
+cleaned_csv/judge_gender_name_court_map.csv
+cleaned_csv/name_match_*
+cleaned_csv/nos_*
+cleaned_csv/unmatched_judges.csv
+cleaned_csv/search_opinion_text_audit_examples.csv
+figures/federal_appeals_*
+figures/nos_*
+
+# LaTeX build products
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc

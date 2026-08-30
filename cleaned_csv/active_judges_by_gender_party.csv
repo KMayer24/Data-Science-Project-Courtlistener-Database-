@@ -1,0 +1,15 @@
+gender_clean,political_party_group,n_active_judges
+Female,Democratic,705
+Male,Democratic,1212
+Missing,Democratic,25
+Female,Missing,779
+Male,Missing,1377
+Missing,Missing,402
+Female,Multiple,114
+Male,Multiple,167
+Missing,Multiple,6
+Female,Other,1
+Male,Other,62
+Female,Republican,310
+Male,Republican,1298
+Missing,Republican,16

@@ -1,0 +1,7 @@
+gender_clean,activity_status,n
+f,active,1909
+f,not_active,508
+m,active,4116
+m,not_active,4687
+Missing,active,449
+Missing,not_active,4522

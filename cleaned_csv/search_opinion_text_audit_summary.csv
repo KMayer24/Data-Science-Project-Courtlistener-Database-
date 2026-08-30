@@ -1,0 +1,7 @@
+field_name,total_rows,non_empty_rows,non_empty_pct
+author_str,10745929,4644085,43.22
+html,10745929,879029,8.18
+plain_text,10745929,2562429,23.85
+xml_harvard,10745929,7077906,65.87
+any_text_available,10745929,10745583,100.00
+html_with_citations,10745929,10731120,99.86
