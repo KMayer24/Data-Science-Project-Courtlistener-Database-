@@ -1,7 +1,7 @@
 # CourtListener Research Database
 
 This repository documents a reduced PostgreSQL research database reconstructed
-from the [CourtListener bulk-data](https://www.courtlistener.com/help/bulk-data/)
+from the [CourtListener bulk-data](https://www.courtlistener.com/help/api/bulk-data/)
 snapshot dated **2026-03-31**. It contains the database definition, import and
 validation code, analysis queries, aggregated outputs, and figures used to
 document the database.
@@ -28,21 +28,22 @@ cleaned_csv/                  Aggregated query outputs used by the plots
 figures/                      Generated figures
 ```
 
-The master's-thesis preprocessing pipeline and its additional `ext` schema are
-maintained separately and are not part of this database.
-
 ## Requirements
 
 | Software | Requirement |
 |---|---|
-| PostgreSQL | 14 or later |
-| Python | 3.10 or later |
+| PostgreSQL | 14 or later (developed with 18.6) |
+| Python | 3.10 or later (developed with 3.13.5) |
 | Python packages | `pandas`, `matplotlib` |
-| Shell tools | `bash`, `bzcat` (`bzip2`) |
+| Shell tools | `bash`, `bzcat`, `bunzip2` (`bzip2`) |
 
 ## Source data
 
-The loader expects the following local input files in `import/` by default:
+CourtListener distributes the dated bulk-data files as `.csv.bz2` archives.
+The loader expects the following local input files in `import/` by default.
+Except for the FJC file, these are the decompressed CSV files; the two
+`valid_only` citation files are validated derivatives of the corresponding raw
+CourtListener exports.
 
 ```text
 courts-2026-03-31.csv
@@ -64,11 +65,24 @@ search_opinioncluster_non_participating_judges-2026-03-31.csv
 fjc-integrated-database-2026-03-31.csv.bz2
 ```
 
+After downloading the CourtListener files, decompress the CSV archives other
+than the FJC file:
+
+```bash
+find import -maxdepth 1 -type f -name '*.csv.bz2' \
+    ! -name 'fjc-integrated-database-*.csv.bz2' \
+    -exec bunzip2 --keep {} +
+```
+
+The loader streams and normalises the compressed FJC file directly. It can
+also read that file after decompression if
+`fjc-integrated-database-2026-03-31.csv` is present instead.
+
 All dated CourtListener exports came from its bulk-data snapshot. The
 `fjc-integrated-database` export contains the Federal Judicial Center's
 Integrated Database records distributed through CourtListener. The small
-`people_db_race` lookup was reconstructed from the identifiers referenced by
-the person--race relation.
+`people_db_race` lookup is an official CourtListener export containing the
+eight race codes referenced by the person--race relation.
 
 ### Citation-file validation
 
@@ -217,6 +231,13 @@ CourtListener bulk files.
 This repository does not redistribute the CourtListener bulk files. Users
 should obtain them from CourtListener and follow the applicable source-data
 terms. CourtListener source documentation and bulk-data access are available
-at <https://www.courtlistener.com/help/bulk-data/>. FJC Integrated Database
+at <https://www.courtlistener.com/help/api/bulk-data/>. FJC Integrated Database
 documentation is available from the
 [Federal Judicial Center](https://www.fjc.gov/research/idb).
+
+All other project-created files in this repository, including the database
+schema, SQL, Python, and shell scripts, and this README, are available under
+the [MIT License](LICENSE-CODE.md). The derived summary tables in `cleaned_csv/`
+and the figures in `figures/` are available under
+[CC BY 4.0](LICENSE-DATA.md). These licenses do not apply to the original
+CourtListener source files.
