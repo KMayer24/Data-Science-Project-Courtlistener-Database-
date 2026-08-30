@@ -152,6 +152,13 @@ psql $PSQL_OPTS -d "$DB_NAME" --command "\COPY public.search_opinioncluster_non_
   id, opinioncluster_id, person_id
 ) FROM '$BASE/search_opinioncluster_non_participating_judges-2026-03-31.csv' WITH (FORMAT csv, ENCODING utf8, ESCAPE E'\\\\', HEADER)"
 
+if [[ ! -f "$BASE/citation-map-2026-03-31_valid_only.csv" || \
+      ! -f "$BASE/citations-2026-03-31_valid_only.csv" ]]; then
+    echo "Preparing referentially valid citation files..."
+    BULK_DB_NAME="$DB_NAME" BULK_DIR="$BASE" \
+      python3 "$SCRIPT_DIR/prepare_citation_files.py"
+fi
+
 echo "Loading search_opinionscited..."
 psql $PSQL_OPTS -d "$DB_NAME" --command "\COPY public.search_opinionscited (
   id, depth, cited_opinion_id, citing_opinion_id

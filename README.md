@@ -22,6 +22,7 @@ actually used in this project.
 import/
     schema_final.sql          Core PostgreSQL schema (17 public tables)
     load_core.sh              Core bulk-data loader
+    prepare_citation_files.py Creates validated citation inputs
 sql/                          Validation, descriptive, and export queries
 python/                       Plotting scripts for the exported results
 cleaned_csv/                  Aggregated query outputs used by the plots
@@ -41,17 +42,17 @@ figures/                      Generated figures
 
 CourtListener distributes the dated bulk-data files as `.csv.bz2` archives.
 The loader expects the following local input files in `import/` by default.
-Except for the FJC file, these are the decompressed CSV files; the two
-`valid_only` citation files are validated derivatives of the corresponding raw
-CourtListener exports.
+Except for the FJC file, these are the decompressed CSV files. The loader
+creates the two large `valid_only` citation files locally from the raw citation
+exports; they are not stored in this repository.
 
 ```text
 courts-2026-03-31.csv
 dockets-2026-03-31.csv
 opinion-clusters-2026-03-31.csv
 opinions-2026-03-31.csv
-citations-2026-03-31_valid_only.csv
-citation-map-2026-03-31_valid_only.csv
+citations-2026-03-31.csv
+citation-map-2026-03-31.csv
 people-db-people-2026-03-31.csv
 people-db-races-2026-03-31.csv
 people-db-schools-2026-03-31.csv
@@ -95,8 +96,24 @@ opinion-cluster tables before the final import:
 | `citation-map-2026-03-31.csv` | 2,152 | Missing `citing_opinion_id` | `citation-map-2026-03-31_valid_only.csv` |
 | `citations-2026-03-31.csv` | 8 | Missing `cluster_id` | `citations-2026-03-31_valid_only.csv` |
 
-The small exclusion lists are retained in `import/`. The schema, loader, and
-validation scripts document how the validated files enter the database.
+The large `valid_only` derivatives are excluded from Git. After loading the
+parent opinion and opinion-cluster tables, `load_core.sh` automatically runs
+`import/prepare_citation_files.py` whenever either derivative is absent. The
+script reads the parent identifiers from PostgreSQL, streams the raw citation
+exports, and writes the valid rows to the two files required by the loader. It
+also reproduces the excluded rows and verifies them against the small
+`missing_*` files retained in `import/`.
+
+To repeat this preparation manually after the parent tables have been loaded:
+
+```bash
+BULK_DB_NAME=courtcase_db \
+BULK_DIR=/path/to/courtlistener/import \
+python3 import/prepare_citation_files.py --force
+```
+
+This step processes approximately 95 million citation records and may take
+some time. It uses only the Python standard library and the `psql` client.
 
 ## Database setup
 
