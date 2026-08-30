@@ -17,8 +17,7 @@ reports/
 import/*.csv
 import/*.csv.bz2
 
-# Keep the small project-created race lookup and exclusion diagnostics.
-!import/people_db_race-2026-03-31.csv
+# Keep the small project-created exclusion diagnostics.
 !import/citation-map-2026-03-31_missing_citing.csv
 !import/citations-2026-03-31_missing_cluster.csv
 
