@@ -12,9 +12,12 @@ We did not execute that schema directly. Instead, `import/schema_final.sql`
 defines the reduced set of tables and the data-type and constraint adaptations
 actually used in this project.
 
-> **Data availability:** The original bulk files are not included because they
-> occupy hundreds of gigabytes. The repository records the required filenames,
-> snapshot date, preprocessing decisions, and final aggregate outputs.
+> **Data availability:** The original bulk files are not stored in Git because
+> they occupy hundreds of gigabytes. The fixed 2026-03-31 release, including
+> the selected source tables and derived layer, is archived under the reserved
+> Zenodo DOI <https://doi.org/10.5281/zenodo.23063945>. This repository records
+> the required filenames, snapshot date, processing decisions, and code needed
+> to build, export, restore, and validate that release.
 
 ## Repository structure
 
@@ -23,10 +26,15 @@ import/
     schema_final.sql          Core PostgreSQL schema (17 public tables)
     load_core.sh              Core bulk-data loader
     prepare_citation_files.py Creates validated citation inputs
+deposit_pipeline/             Derived-layer and deposit-facing SQL pipeline
 sql/                          Validation, descriptive, and export queries
 python/                       Plotting scripts for the exported results
 cleaned_csv/                  Aggregated query outputs used by the plots
 figures/                      Generated figures
+build_deposit_db.sh            Builds the isolated submission database
+export_deposit.sh              Creates and packages the data release
+restore_deposit.sh             Restores and validates the deposited files
+upload_zenodo.sh               Resumable, checksum-verified Zenodo upload
 ```
 
 ## Requirements
@@ -155,6 +163,79 @@ APPLY_SCHEMA=1 \
 bash import/load_core.sh
 ```
 
+### 3. Rebuild the derived layer
+
+The publication pipeline is under `deposit_pipeline/`. To recompute stages
+01–04 without touching either `public` or the source `ext` schema, run:
+
+```bash
+./rebuild_publication_pipeline.sh --target ext_release
+```
+
+The source `ext` schema supplies only the four preserved FJC input tables; the
+corpus, gender assignment, case linkage and covariates are recomputed. The
+command checks the publication-release totals of 1,472,533 appellate opinions,
+555,297 of them with a resolved author gender, of which 69,936 are female and
+485,361 male. An individual judge is identified for 524,777 opinions;
+judge-level analyses should use that group. Use `--replace` only to
+intentionally replace an existing rebuild schema. See
+`deposit_pipeline/README.md` for the separation between rebuilding the derived
+layer and constructing the smaller submission database.
+
+`fjc_appeal_id` is assigned by a total ordering over all normalised FJC fields,
+and the rebuild fails if the generated IDs do not follow that ordering.
+
+### 4. Build and export the release package
+
+The release database is kept in a separate PostgreSQL instance. The build
+script copies the selected core tables, runs the deposit-facing SQL, applies
+the release constraints, and validates the expected counts:
+
+```bash
+./build_deposit_db.sh --all
+```
+
+The deterministic export writes the 35 tables, generated schema and indexes,
+data dictionary, manifests, restore script, and release validation SQL. Choose
+a new output directory; an existing release is never overwritten:
+
+```bash
+OUT_DIR=/path/to/new/release ./export_deposit.sh --all
+```
+
+After exporting, archives larger than 50,000,000,000 bytes are split into
+numbered parts of at most 9,000,000,000 bytes. The original archive size and
+SHA-256 remain in `manifest.tsv`; `parts.tsv` records the name, size, and
+SHA-256 of every distributed part. `SHA256SUMS` covers the physical files in
+the package. The packaging step can also be repeated without accessing either
+database or exporting any table again:
+
+```bash
+./export_deposit.sh --package-only /path/to/existing/export
+```
+
+The published release contains 50 files representing 35 tables. Its
+`public_search_opinion.csv.bz2` archive is distributed as six byte-level parts.
+Concatenating those files in name order reproduces the archive exactly:
+
+```bash
+cat public_search_opinion.csv.bz2.part0[0-5] > public_search_opinion.csv.bz2
+```
+
+Manual concatenation is not required for restoration. The restore script reads
+the parts as one stream, checks both their individual hashes and the reassembled
+archive hash, imports through a FIFO, creates the keys, and runs the release
+regression checks:
+
+```bash
+createdb courtlistener_release_restore
+cd /path/to/release
+RESTORE_DB=courtlistener_release_restore ./restore_deposit.sh
+```
+
+The uploaded multipart package was restored into a clean database and passed
+all row-count, attribution, case-linkage, and foreign-key checks.
+
 ## Schema overview
 
 The database contains 17 tables in the `public` schema. Counts refer to the
@@ -240,8 +321,9 @@ CourtListener bulk files.
 - A generated opinion cluster is not necessarily equivalent to a single
   published judicial opinion, because clusters can contain multiple opinion
   objects.
-- The FJC Integrated Database primarily covers federal district-court cases and
-  should not be treated as universal case metadata.
+- The core `recap_fjcintegrateddatabase` table contains federal district-court
+  records. The derived layer separately harmonises the FJC appellate releases;
+  neither source should be treated as universal case metadata.
 
 ## Data licensing and attribution
 

@@ -13,6 +13,18 @@ work/
 # repository contains only the database, analysis, and derived data files.
 reports/
 
+# Local writing material and internal project-management notes. These are
+# not part of the public code or data release.
+references/
+TODO_EPJDS.md
+zenodo_record_metadata.md
+sql/Data_Science_Project_Courlistener-19.pdf
+
+# Local notebook used while designing the validation sample. The canonical,
+# non-interactive release workflow is deposit_pipeline/05_deposit/03_validation_sample.sql
+# plus python/12_score_validation_sample.py.
+python/13_build_validation_sample.ipynb
+
 # CourtListener/FJC bulk data are hundreds of gigabytes and are not tracked.
 import/*.csv
 import/*.csv.bz2
@@ -52,3 +64,13 @@ figures/nos_*
 *.run.xml
 *.synctex.gz
 *.toc
+
+# Deposit export staging (large, regenerable from sql/derived/)
+export/
+
+# Generated validation output
+validation_report/
+
+# Superseded notebooks and scratch work. Kept locally as an archive,
+# excluded from the repository and from the DOI release.
+old/
