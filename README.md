@@ -27,6 +27,7 @@ import/
     load_core.sh              Core bulk-data loader
     prepare_citation_files.py Creates validated citation inputs
 deposit_pipeline/             Derived-layer and deposit-facing SQL pipeline
+docs/                         Method documentation and online appendix
 sql/                          Validation, descriptive, and export queries
 python/                       Plotting scripts for the exported results
 cleaned_csv/                  Aggregated query outputs used by the plots
@@ -36,6 +37,13 @@ export_deposit.sh              Creates and packages the data release
 restore_deposit.sh             Restores and validates the deposited files
 upload_zenodo.sh               Resumable, checksum-verified Zenodo upload
 ```
+
+## Documentation
+
+| Document | Contents |
+|---|---|
+| [`docs/methods-authorship.md`](docs/methods-authorship.md) | Judge reference set, the four-step author-gender cascade, matching hierarchies, HTML attribution patterns, coverage |
+| [`docs/methods-fjc-linkage.md`](docs/methods-fjc-linkage.md) | Linkage to the FJC appellate Integrated Data Base, docket normalisation, case domains, outcome classification, limitations |
 
 ## Requirements
 
