@@ -149,7 +149,10 @@ def make_figure(pivot: pd.DataFrame) -> None:
     ax.set_ylabel("Recorded opinion clusters")
     ax.set_xlim(YEAR_MIN, YEAR_MAX)
     ax.set_ylim(bottom=0)
-    ax.set_xticks(list(range(YEAR_MIN, 2011, 10)) + [LAST_COMPLETE_YEAR])
+    # Decades only, so the spacing stays even. The series ends with the last
+    # complete year; the caption states that, and an extra tick there would
+    # read as a decade boundary.
+    ax.set_xticks(list(range(YEAR_MIN, 2021, 10)))
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{int(x):,}"))
     ax.grid(axis="y", color="#d7dce2", linestyle=":", linewidth=0.7)
     ax.set_axisbelow(True)
