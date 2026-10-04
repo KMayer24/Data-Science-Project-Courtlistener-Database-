@@ -33,6 +33,7 @@ python/                       Plotting scripts for the exported results
 cleaned_csv/                  Aggregated query outputs used by the plots
 figures/                      Generated figures
 validation/                   Manual author-attribution audit and results
+DATASHEET.md                  Dataset motivation, composition, uses, and maintenance
 build_deposit_db.sh            Builds the isolated submission database
 export_deposit.sh              Creates and packages the data release
 restore_deposit.sh             Restores and validates the deposited files
@@ -43,6 +44,7 @@ upload_zenodo.sh               Resumable, checksum-verified Zenodo upload
 
 | Document | Contents |
 |---|---|
+| [`DATASHEET.md`](DATASHEET.md) | Motivation, composition, collection, preprocessing, intended uses, distribution, and maintenance of the fixed dataset |
 | [`docs/methods-authorship.md`](docs/methods-authorship.md) | Judge reference set, the four-step author-gender cascade, matching hierarchies, HTML attribution patterns, coverage |
 | [`docs/methods-fjc-linkage.md`](docs/methods-fjc-linkage.md) | Linkage to the FJC appellate Integrated Data Base, docket normalisation, case domains, outcome classification, limitations |
 | [`validation/README.md`](validation/README.md) | Reproducible validation-sample draw, manual annotation rules, scoring procedure, and precision results |
