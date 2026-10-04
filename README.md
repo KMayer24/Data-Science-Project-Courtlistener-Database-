@@ -8,13 +8,13 @@ document the database.
 
 The database structure was derived from CourtListener's accompanying
 [`schema-2026-03-31.sql`](https://storage.courtlistener.com/bulk-data/schema-2026-03-31.sql).
-We did not execute that schema directly. Instead, `import/schema_final.sql`
+I did not execute that schema directly. Instead, `import/schema_final.sql`
 defines the reduced set of tables and the data-type and constraint adaptations
 actually used in this project.
 
 > **Data availability:** The original bulk files are not stored in Git because
 > they occupy hundreds of gigabytes. The fixed 2026-03-31 release, including
-> the selected source tables and derived layer, is archived under the reserved
+> the selected source tables and derived layer, is archived under the
 > Zenodo DOI <https://doi.org/10.5281/zenodo.23063945>. This repository records
 > the required filenames, snapshot date, processing decisions, and code needed
 > to build, export, restore, and validate that release.
@@ -104,7 +104,7 @@ eight race codes referenced by the person--race relation.
 ### Citation-file validation
 
 Two raw citation exports contained references to parent records that were not
-present in the same snapshot. We validated them against the loaded opinion and
+present in the same snapshot. I validated them against the loaded opinion and
 opinion-cluster tables before the final import:
 
 | Source file | Excluded rows | Reason | File used by loader |

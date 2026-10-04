@@ -4,15 +4,15 @@ This appendix documents the linkage between the CourtListener federal appellate 
 
 ## Source Data and Coverage
 
-The appellate component of the FJC Integrated Database ([Integrated Data Base](https://www.fjc.gov/research/idb)) is distributed in two release files covering 1971–2007 and 2008 onward (see the codebooks listed under References). We preserved the imported raw tables as compressed CSV snapshots and harmonised the fields shared across the two releases. The resulting table contains 2,403,096 appellate records and includes the FJC circuit code, docket number, docket and judgment dates, appeal type, originating agency, jurisdiction, nature of suit, nature of offence, appellant, appellee, outcome, disposition, and statistical year.
+The appellate component of the FJC Integrated Database ([Integrated Data Base](https://www.fjc.gov/research/idb)) is distributed in two release files covering 1971–2007 and 2008 onward (see the codebooks listed under References). I preserved the imported raw tables as compressed CSV snapshots and harmonised the fields shared across the two releases. The resulting table contains 2,403,096 appellate records and includes the FJC circuit code, docket number, docket and judgment dates, appeal type, originating agency, jurisdiction, nature of suit, nature of offence, appellant, appellee, outcome, disposition, and statistical year.
 
 The appellate IDB covers cases from Statistical Year 1971 onwards. CourtListener opinions filed before 1971 therefore fall outside the linkage period. The U.S. Court of Appeals for the Federal Circuit is also excluded because the two appellate IDB files do not provide a separate circuit code for that court.
 
-Existing FJC links in the CourtListener data were available for district-court cases but not for appellate opinions, consistent with the Free Law Project's description of its initial integration of the civil IDB component (see References). We therefore constructed a separate opinion-level linkage between the CourtListener appellate corpus and the FJC appellate files.
+Existing FJC links in the CourtListener data were available for district-court cases but not for appellate opinions, consistent with the Free Law Project's description of its initial integration of the civil IDB component (see References). I therefore constructed a separate opinion-level linkage between the CourtListener appellate corpus and the FJC appellate files.
 
 ## Court-Code Harmonisation
 
-The FJC and CourtListener use different court identifiers. We therefore constructed a deterministic crosswalk between the FJC circuit codes and the CourtListener courts included in the linkage. All 2,403,096 retained FJC records received a valid CourtListener court identifier. The court crosswalk was used both to restrict candidate matches to the same appellate court and to prevent identical docket numbers from different circuits from being treated as potential matches.
+The FJC and CourtListener use different court identifiers. I therefore constructed a deterministic crosswalk between the FJC circuit codes and the CourtListener courts included in the linkage. All 2,403,096 retained FJC records received a valid CourtListener court identifier. The court crosswalk was used both to restrict candidate matches to the same appellate court and to prevent identical docket numbers from different circuits from being treated as potential matches.
 
 **Table 1.** Crosswalk between FJC circuit codes and CourtListener courts.
 
@@ -33,7 +33,7 @@ The FJC and CourtListener use different court identifiers. We therefore construc
 
 ## Docket-Number Normalisation
 
-Docket numbers are formatted inconsistently within and across the two sources. The FJC files store the matchable component as a compact combination of filing year and sequence number, whereas CourtListener retains the displayed docket string. We therefore converted CourtListener docket numbers to a common seven-digit key consisting of a two-digit year followed by a five-digit, zero-padded sequence number.
+Docket numbers are formatted inconsistently within and across the two sources. The FJC files store the matchable component as a compact combination of filing year and sequence number, whereas CourtListener retains the displayed docket string. I therefore converted CourtListener docket numbers to a common seven-digit key consisting of a two-digit year followed by a five-digit, zero-padded sequence number.
 
 The normalisation recognised two principal structures:
 
@@ -66,17 +66,17 @@ Within the IDB-covered period from 1971 onward, docket numbers were successfully
 
 ## Candidate Generation
 
-We generated candidate matches by joining CourtListener opinions to FJC records on the appellate court and normalised docket number. Thus, each candidate came from the same court and had the same docket-number key as the corresponding CourtListener opinion.
+I generated candidate matches by joining CourtListener opinions to FJC records on the appellate court and normalised docket number. Thus, each candidate came from the same court and had the same docket-number key as the corresponding CourtListener opinion.
 
-We retained all matching FJC records rather than selecting one record per docket at this stage. A docket number can be associated with multiple records, for example because of reopened proceedings or successive procedural stages. Premature deduplication could therefore remove the record corresponding to the CourtListener opinion. Cases with multiple candidates were resolved in the subsequent matching stage.
+I retained all matching FJC records rather than selecting one record per docket at this stage. A docket number can be associated with multiple records, for example because of reopened proceedings or successive procedural stages. Premature deduplication could therefore remove the record corresponding to the CourtListener opinion. Cases with multiple candidates were resolved in the subsequent matching stage.
 
 ## Candidate Selection and Linkage Results
 
-We linked CourtListener opinions to FJC records that shared the same appellate court and normalised docket number. When several FJC records met these criteria, we selected the record whose judgment date was closest to the CourtListener opinion date. We resolved any remaining ties using the FJC record identifier.
+I linked CourtListener opinions to FJC records that shared the same appellate court and normalised docket number. When several FJC records met these criteria, I selected the record whose judgment date was closest to the CourtListener opinion date. I resolved any remaining ties using the FJC record identifier.
 
-We included a selected link in the analysis only when the dates matched exactly or differed by no more than seven days. We retained links with larger differences for diagnostic purposes but excluded them from the analysis because they could represent a different proceeding associated with the same docket.
+I included a selected link in the analysis only when the dates matched exactly or differed by no more than seven days. I retained links with larger differences for diagnostic purposes but excluded them from the analysis because they could represent a different proceeding associated with the same docket.
 
-We performed the linkage separately for each CourtListener opinion object. Majority, concurring, and dissenting opinions from the same decision generally shared the same court, docket number, and filing date and therefore received the same FJC record. We treated the linked metadata as describing the underlying appeal rather than separate cases for each opinion type.
+I performed the linkage separately for each CourtListener opinion object. Majority, concurring, and dissenting opinions from the same decision generally shared the same court, docket number, and filing date and therefore received the same FJC record. I treated the linked metadata as describing the underlying appeal rather than separate cases for each opinion type.
 
 **Table 3.** Linkage outcomes and analytical eligibility.
 
@@ -96,13 +96,13 @@ We performed the linkage separately for each CourtListener opinion object. Major
 
 Table 3 includes all 1,414,601 examined opinions, including those filed before the appellate IDB coverage began in 1971. Of the 238,632 opinions without a normalisable docket number, 189,685 were from this earlier period. Within the coverage period, 48,947 opinions lacked a normalisable docket number, consistent with Table 2. Overall, 1,069,145 opinions (75.58%) satisfied the linkage criteria and were admitted to the analysis.
 
-Among the 1,069,145 admissible links, 96.68% had identical CourtListener and FJC dates, and 98.30% differed by no more than one day. Because we used date proximity for candidate selection and analytical eligibility, we interpret this agreement as descriptive evidence of temporal plausibility rather than as an independent estimate of linkage accuracy. The requirement that candidates share both the appellate court and normalised docket number provided an additional safeguard against false matches.
+Among the 1,069,145 admissible links, 96.68% had identical CourtListener and FJC dates, and 98.30% differed by no more than one day. Because I used date proximity for candidate selection and analytical eligibility, I interpret this agreement as descriptive evidence of temporal plausibility rather than as an independent estimate of linkage accuracy. The requirement that candidates share both the appellate court and normalised docket number provided an additional safeguard against false matches.
 
 Linkage coverage varied across circuits because CourtListener docket numbers differed in availability and formatting. As Table 2 shows, most of this variation within the IDB coverage period occurred in the Second and D.C. Circuits.
 
 ## Construction of Case-Level Variables
 
-For each admitted FJC record, we retained the appeal type, nature of suit, nature of offence, originating agency, jurisdiction code, appellant, appellee, outcome, and disposition. Following the appellate IDB codebooks, we used the FJC appeal type to assign each record to a broad procedural class and to determine which field was relevant for the case-domain classification (see the codebooks listed under References). Table 4 summarises this routing.
+For each admitted FJC record, I retained the appeal type, nature of suit, nature of offence, originating agency, jurisdiction code, appellant, appellee, outcome, and disposition. Following the appellate IDB codebooks, I used the FJC appeal type to assign each record to a broad procedural class and to determine which field was relevant for the case-domain classification (see the codebooks listed under References). Table 4 summarises this routing.
 
 **Table 4.** Routing of FJC appeal types to case-domain information.
 
@@ -117,7 +117,7 @@ For each admitted FJC record, we retained the appeal type, nature of suit, natur
 
 ### Case Domains
 
-We mapped the routed FJC information to six case domains. We assigned criminal appeals to the immigration domain when the FJC offence code identified an immigration offence and classified the remaining direct criminal appeals as criminal. For administrative appeals, we used the originating agency to identify immigration, employment, and benefits cases. For civil appeals, we used the FJC nature-of-suit code. We assigned all remaining records to the other domain. The complete code-level crosswalk is included in the replication materials. Table 5 presents the resulting distribution among admissible FJC links.
+I mapped the routed FJC information to six case domains. I assigned criminal appeals to the immigration domain when the FJC offence code identified an immigration offence and classified the remaining direct criminal appeals as criminal. For administrative appeals, I used the originating agency to identify immigration, employment, and benefits cases. For civil appeals, I used the FJC nature-of-suit code. I assigned all remaining records to the other domain. The complete code-level crosswalk is included in the replication materials. Table 5 presents the resulting distribution among admissible FJC links.
 
 **Table 5.** Substantive case domains among admissible FJC links.
 
@@ -133,7 +133,7 @@ We mapped the routed FJC information to six case domains. We assigned criminal a
 
 ### Outcome Classification
 
-We used the FJC outcome variable to classify how the court of appeals treated the decision under review. Table 6 presents the resulting outcome classes, their corresponding FJC categories, and their distribution among admissible links.
+I used the FJC outcome variable to classify how the court of appeals treated the decision under review. Table 6 presents the resulting outcome classes, their corresponding FJC categories, and their distribution among admissible links.
 
 **Table 6.** Classification and distribution of FJC appellate outcomes.
 
@@ -150,11 +150,11 @@ We used the FJC outcome variable to classify how the court of appeals treated th
 
 The reversed class comprised 130,950 records coded as reversed or vacated and 18,766 coded as remanded. The other class combined dismissed, other-merits, certificate-denied, and unmapped results.
 
-Because the FJC revised its outcome coding beginning in Statistical Year 1985, some earlier values do not have directly comparable later definitions. We conservatively assigned values without a clear analytical equivalent to the other class.
+Because the FJC revised its outcome coding beginning in Statistical Year 1985, some earlier values do not have directly comparable later definitions. I conservatively assigned values without a clear analytical equivalent to the other class.
 
 ## Dependence Structure and Limitations
 
-The linkage unit was the individual CourtListener opinion object, whereas the FJC variables describe the underlying appeal. Among the 1,069,145 admissible links, 760,199 opinion objects (71.1%) were the only linked opinion associated with their FJC appeal, while 308,946 (28.9%) shared an appeal with at least one additional opinion object. Majority, concurring, and dissenting opinions from the same decision could therefore inherit the same case domain and outcome. We treated these variables as appeal-level metadata and did not interpret repeated opinion objects as independent case-level observations.
+The linkage unit was the individual CourtListener opinion object, whereas the FJC variables describe the underlying appeal. Among the 1,069,145 admissible links, 760,199 opinion objects (71.1%) were the only linked opinion associated with their FJC appeal, while 308,946 (28.9%) shared an appeal with at least one additional opinion object. Majority, concurring, and dissenting opinions from the same decision could therefore inherit the same case domain and outcome. I treated these variables as appeal-level metadata and did not interpret repeated opinion objects as independent case-level observations.
 
 The linkage is limited to the period covered by the appellate IDB and excludes the Federal Circuit. It also depends on the availability and normalisation of CourtListener docket numbers, which varied particularly in the Second and D.C. Circuits (Table 2). When several FJC records shared the same court and docket number, selecting the temporally closest record reduced but could not eliminate the possibility of matching a different procedural stage. Moreover, because date proximity informed both candidate selection and analytical eligibility, date agreement does not constitute an independent validation of linkage accuracy.
 
@@ -170,7 +170,7 @@ The linkage is limited to the period covered by the appellate IDB and excludes t
 
 ## References
 
-- Federal Judicial Center. *Integrated Data Base*, appeals component. <https://www.fjc.gov/research/idb>
-- Federal Judicial Center. *Codebook, Appeals Integrated Data Base, 1971–2007*. Distributed with the IDB appeals files.
-- Federal Judicial Center. *Codebook, Appeals Integrated Data Base, 2008 onward*. Distributed with the IDB appeals files.
+- Federal Judicial Center. *Integrated Data Base*. <https://www.fjc.gov/research/idb>
+- Federal Judicial Center. *Integrated Data Base: Appeals, 1971–2007. Codebook*. <https://www.fjc.gov/research/idb>
+- Federal Judicial Center. *Integrated Data Base: Appeals, 2008–present. Codebook*. <https://www.fjc.gov/research/idb>
 - Free Law Project. Integration of the FJC civil Integrated Data Base component into CourtListener.

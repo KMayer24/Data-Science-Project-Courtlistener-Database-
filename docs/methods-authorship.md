@@ -4,23 +4,23 @@ This appendix documents the judge reference data, name-matching hierarchies, and
 
 ## Judge Reference Set
 
-We constructed the judge reference set from CourtListener person and position records and the Federal Judicial Center's *Biographical Directory of Article III Federal Judges* ([Biographical Directory of Article III Federal Judges](https://www.fjc.gov/history/judges)). From the category-organized relational export, downloaded on May 11, 2026, we used the individual *Demographics* and *Federal Judicial Service* CSV files. The first provides judge identifiers, name components, and recorded gender, while the second provides judicial appointments and court-service periods.
+I constructed the judge reference set from CourtListener person and position records and the Federal Judicial Center's *Biographical Directory of Article III Federal Judges* ([Biographical Directory of Article III Federal Judges](https://www.fjc.gov/history/judges)). From the category-organized relational export, downloaded on May 11, 2026, I used the individual *Demographics* and *Federal Judicial Service* CSV files. The first provides judge identifiers, name components, and recorded gender, while the second provides judicial appointments and court-service periods.
 
-We linked the files through the common FJC judge identifier, retained service on the U.S. Courts of Appeals, and mapped the FJC court names to the thirteen CourtListener courts included in the corpus. Because the FJC export changes over time, the retrieval date identifies the version used in this study. We retained local copies of both source files and recorded their SHA-256 checksums in the replication materials.
+I linked the files through the common FJC judge identifier, retained service on the U.S. Courts of Appeals, and mapped the FJC court names to the thirteen CourtListener courts included in the corpus. Because the FJC export changes over time, the retrieval date identifies the version used in this study. I retained local copies of both source files and recorded their SHA-256 checksums in the replication materials.
 
-The FJC integration added 129 judge–court records that were absent from the CourtListener person–position links, increasing the reference set from 779 to 908 records. We then added eight manually verified supplemental records for edge cases identified during inspection of frequently unresolved author names. These records covered one documented name change in the Fifth Circuit and seven visiting-judge court associations involving six judges sitting by designation whose FJC records list only their home courts. We verified the supplemental gender information against the judges' FJC records. For the visiting-judge records, we recorded the earliest observed opinion year as the start date and documented the observed years in the audit notes; formal designation end dates were unavailable. The final reference set contains 916 judge–court records with recorded gender information.
+The FJC integration added 129 judge–court records that were absent from the CourtListener person–position links, increasing the reference set from 779 to 908 records. I then added eight manually verified supplemental records for edge cases identified during inspection of frequently unresolved author names. These records covered one documented name change in the Fifth Circuit and seven visiting-judge court associations involving six judges sitting by designation whose FJC records list only their home courts. I verified the supplemental gender information against the judges' FJC records. For the visiting-judge records, I recorded the earliest observed opinion year as the start date and documented the observed years in the audit notes; formal designation end dates were unavailable. The final reference set contains 916 judge–court records with recorded gender information.
 
 The source-based stages in Steps 3 and 4 used an expanded matching pool. In addition to these 916 appellate judge–court records, the pool included 9,965 CourtListener judge–court records from courts outside the thirteen selected appellate courts. These additional records were available only to the cross-court matching tiers and permitted source attributions to be matched to judges sitting by designation.
 
 ## Step 1: Direct Structured Author Link
 
-Step 1 used CourtListener's structured author identifier when available. This identifier links an opinion directly to the corresponding CourtListener person record, from which we obtained the recorded gender. Because the procedure relies on an explicit database relationship instead of inferred name similarity, it is the most direct assignment method in the cascade.
+Step 1 used CourtListener's structured author identifier when available. This identifier links an opinion directly to the corresponding CourtListener person record, from which I obtained the recorded gender. Because the procedure relies on an explicit database relationship instead of inferred name similarity, it is the most direct assignment method in the cascade.
 
 Step 1 resolved 10,234 opinions.
 
 ## Step 2: Recorded Author-Name Matching
 
-For opinions without a structured author identifier, Step 2 used CourtListener's recorded author-name field, which generally contains the surname or a short name form of the authoring judge. Step 2 was restricted to opinions marked non-*per curiam* and with a non-empty author-name field. We normalized capitalization, punctuation, and whitespace while retaining compound surnames. We then applied the following matching hierarchy:
+For opinions without a structured author identifier, Step 2 used CourtListener's recorded author-name field, which generally contains the surname or a short name form of the authoring judge. Step 2 was restricted to opinions marked non-*per curiam* and with a non-empty author-name field. I normalized capitalization, punctuation, and whitespace while retaining compound surnames. I then applied the following matching hierarchy:
 
 1. Exact surname match within the opinion's circuit
 2. Compound-surname suffix match within the circuit
@@ -29,13 +29,13 @@ For opinions without a structured author identifier, Step 2 used CourtListener's
 
 Suffix matching accommodated shortened forms of compound surnames, such as *Orsdel* for *Van Orsdel* or *Eve* for *St. Eve*. Cross-circuit matching accommodated judges sitting by designation, where the opinion belongs to one circuit but the judge is listed under another court in the reference data.
 
-We assigned gender only when all candidates at the best available matching level shared the same recorded gender. If the best matching group contained both female and male candidates, or if no candidate could be identified, we left the opinion unresolved.
+I assigned gender only when all candidates at the best available matching level shared the same recorded gender. If the best matching group contained both female and male candidates, or if no candidate could be identified, I left the opinion unresolved.
 
 Step 2 resolved 408,245 additional opinions and therefore contributed the largest number of assignments in the cascade.
 
 ## Source-Based Author Attribution
 
-The source-based fallback stages considered only published, non-*per curiam* opinions that remained unresolved after Steps 1 and 2. We excluded *per curiam* opinions because they are issued collectively instead of being attributed to an individual author. The HTML-based extraction in Step 4 additionally required a filing year of 1960 or later.
+The source-based fallback stages considered only published, non-*per curiam* opinions that remained unresolved after Steps 1 and 2. I excluded *per curiam* opinions because they are issued collectively instead of being attributed to an individual author. The HTML-based extraction in Step 4 additionally required a filing year of 1960 or later.
 
 The publication-status restriction applied only to the source-based gender-assignment fallbacks, while the 1960 cutoff applied only to the HTML-based extraction. Opinions marked *per curiam* were excluded from Steps 2–4 but could still receive a gender assignment through the structured author identifier in Step 1. None of these restrictions affected inclusion in the Federal Appeals Corpus.
 
@@ -43,9 +43,9 @@ Unlike the predominantly surname-based recorded author names used in Step 2, the
 
 ### Step 3: Structured XML Attribution
 
-In Step 3, we parsed the structured source XML and extracted names from its dedicated author elements. We retained only entries referring to an individual judge and excluded collective or procedural labels such as *per curiam*, *by the court*, and similar expressions that do not identify an individual author.
+In Step 3, I parsed the structured source XML and extracted names from its dedicated author elements. I retained only entries referring to an individual judge and excluded collective or procedural labels such as *per curiam*, *by the court*, and similar expressions that do not identify an individual author.
 
-We normalized the extracted full name, surname, first initial, and, where present, middle initial separately. Candidate judges were evaluated according to the following priority hierarchy:
+I normalized the extracted full name, surname, first initial, and, where present, middle initial separately. Candidate judges were evaluated according to the following priority hierarchy:
 
 1. Exact full-name match within the opinion's circuit
 2. Initials-plus-surname match within the circuit
@@ -54,22 +54,22 @@ We normalized the extracted full name, surname, first initial, and, where presen
 5. Surname match within the circuit, restricted to judges whose recorded service period included the opinion year
 6. Surname match within the circuit without the service-period restriction
 
-The initials-based tiers required agreement on the first initial and, when an extractable middle initial was present, on the middle initial. The service-period restriction used the recorded start and end dates of the judge's service record to determine whether the service period included the opinion year. This temporal check reduces erroneous matches between judges with the same surname who served during different periods. We retained a same-circuit surname match without the temporal restriction as a lower-priority fallback because service dates may be incomplete or may not fully represent service by designation.
+The initials-based tiers required agreement on the first initial and, when an extractable middle initial was present, on the middle initial. The service-period restriction used the recorded start and end dates of the judge's service record to determine whether the service period included the opinion year. This temporal check reduces erroneous matches between judges with the same surname who served during different periods. I retained a same-circuit surname match without the temporal restriction as a lower-priority fallback because service dates may be incomplete or may not fully represent service by designation.
 
-For each opinion, we retained only candidates from the highest-priority matching tier that produced at least one candidate. We assigned gender when this tier contained a single judge or when all judges in the tier shared the same recorded gender. If the best tier contained both female and male candidates, or if no candidate was found, the opinion remained unresolved.
+For each opinion, I retained only candidates from the highest-priority matching tier that produced at least one candidate. I assigned gender when this tier contained a single judge or when all judges in the tier shared the same recorded gender. If the best tier contained both female and male candidates, or if no candidate was found, the opinion remained unresolved.
 
 Step 3 resolved 11,514 additional opinions.
 
 ### Step 4: HTML Attribution Patterns
 
-In Step 4, we extracted conventional author-attribution formulations from the citation-linked HTML representation. Because document structure varies across the underlying source collections, we first distinguished four layouts:
+In Step 4, I extracted conventional author-attribution formulations from the citation-linked HTML representation. Because document structure varies across the underlying source collections, I first distinguished four layouts:
 
 - Structured Harvard HTML
 - Preformatted inline HTML
 - XML-style inline HTML
 - Generic HTML
 
-For non-Harvard layouts, we produced both a whitespace-normalized text representation and a line-preserving representation. We applied layout-specific attribution patterns in a fixed priority order and retained the first valid extracted candidate. Table 1 summarizes the extraction patterns. The labels H1–H8 are used only to organize the presentation.
+For non-Harvard layouts, I produced both a whitespace-normalized text representation and a line-preserving representation. I applied layout-specific attribution patterns in a fixed priority order and retained the first valid extracted candidate. Table 1 summarizes the extraction patterns. The labels H1–H8 are used only to organize the presentation.
 
 **Table 1.** Author-attribution patterns used in the HTML-based extraction.
 
@@ -84,9 +84,9 @@ For non-Harvard layouts, we produced both a whitespace-normalized text represent
 | H7 | Structured Harvard | First attributed paragraph following an explicit *OPINION* heading and containing a judicial title. |
 | H8 | Structured Harvard | First attributed paragraph containing a judicial title when no explicit *OPINION* heading is available. |
 
-Before matching the extracted names, we removed candidates associated with panel lists, nearby *Before* headers, lists containing multiple judges, collective or procedural labels, party names, and institutional terms. For preformatted inline opinions, we limited the relevant line-anchored pattern to *Circuit Judge* attributions because lines naming a district judge often identify the judge whose decision was under review instead of the appellate author.
+Before matching the extracted names, I removed candidates associated with panel lists, nearby *Before* headers, lists containing multiple judges, collective or procedural labels, party names, and institutional terms. For preformatted inline opinions, I limited the relevant line-anchored pattern to *Circuit Judge* attributions because lines naming a district judge often identify the judge whose decision was under review instead of the appellate author.
 
-We separately normalised the extracted full name, surname, first initial, middle initial, compound-surname form, and suffix-stripped surname. Candidate judges were then evaluated according to the following priority hierarchy:
+I separately normalised the extracted full name, surname, first initial, middle initial, compound-surname form, and suffix-stripped surname. Candidate judges were then evaluated according to the following priority hierarchy:
 
 1. Exact full-name match within the opinion's circuit
 2. Initials-plus-surname match within the circuit
@@ -154,4 +154,4 @@ These figures measure assignment coverage, not assignment accuracy. Manual valid
 
 ## References
 
-- Federal Judicial Center. *Biographical Directory of Article III Federal Judges*. <https://www.fjc.gov/history/judges>
+- Federal Judicial Center. *Biographical Directory of Article III Federal Judges, 1789–present*. <https://www.fjc.gov/history/judges>
