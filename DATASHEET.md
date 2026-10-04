@@ -1,6 +1,6 @@
 # Datasheet for the CourtListener Research Database
 
-This document follows the questions proposed in
+This document is adapted from the questions proposed in
 [Datasheets for Datasets](https://doi.org/10.1145/3458723). It describes the
 fixed dataset version archived at <https://doi.org/10.5281/zenodo.23063945>.
 Technical instructions for building and restoring the database remain in the
@@ -20,8 +20,8 @@ Center (FJC) appellate case records.
 
 ### Who created and funded it?
 
-Katharina Mayer created the database at the University of Konstanz. No
-separate external funding was reported for this release.
+I created the database at the University of Konstanz. I received no external
+funding for this release.
 
 ## Composition
 
@@ -41,6 +41,10 @@ contains:
 - 2,403,096 harmonised FJC appellate case records;
 - opinion-to-FJC candidate links and derived case covariates; and
 - crosswalks for case domain, disposition, and outcome.
+
+The person table contains 16,191 records, 15,613 of which are linked to at
+least one position record. Within the federal appellate derived layer, 2,074
+individual judges are linked uniquely to at least one opinion.
 
 The release also provides a PostgreSQL schema, indexes, a column-level data
 dictionary, manifests, checksums, a restore script, and release-validation
@@ -97,12 +101,31 @@ precision estimates are documented in [`validation/README.md`](validation/README
 ### Does the dataset contain confidential or sensitive information?
 
 The data are derived from public court records and public biographical
-sources. They contain names and recorded demographic or political attributes
-of public officials, including gender, race, religion, and political
-affiliation where present in the source. They contain no information that I
-collected directly from individuals. I did not infer demographic attributes
-from names or opinion text. The recorded categories may not reflect
-self-identification and should not be treated as such.
+sources, but public availability does not make their contents harmless. The
+10.7 million opinion records contain full judicial texts that may identify
+litigants, defendants, victims, witnesses, children, and other private
+individuals. They may describe sexual violence, medical conditions,
+immigration histories, family disputes, criminal allegations, and other
+sensitive circumstances. Some opinions use initials or redactions, but this
+practice is not uniform across courts or periods.
+
+The person and career tables also contain names and recorded demographic or
+political attributes of public officials, including gender, race, religion,
+and political affiliation where present in the source. They contain no
+information that I collected directly from individuals. I did not infer
+demographic attributes from names or opinion text. The recorded categories
+may not reflect self-identification and should not be treated as such.
+
+### Can later sealing, redaction, or removal be reflected?
+
+Not automatically. Courts may seal or redact records after publication, and
+CourtListener may correct records or act on removal requests. This fixed
+snapshot does not follow later changes to the live sources and may therefore
+retain text that is no longer available there in the same form. Before quoting
+or republishing sensitive material, users should check the current official
+record and the live CourtListener entry. The published Zenodo version cannot
+be altered in place; a correction would require a new version and an explicit
+change notice.
 
 ## Collection process
 
@@ -110,7 +133,7 @@ self-identification and should not be treated as such.
 
 I used the CourtListener bulk-data release dated 31 March 2026. The FJC
 components consist of records distributed through CourtListener and the two
-public appellate Integrated Database releases covering 1971--2007 and 2008
+public appellate Integrated Database releases covering 1971–2007 and 2008
 onwards. The repository records the required filenames and the source URLs.
 No web scraping, participant recruitment, or direct data collection was used.
 
@@ -245,9 +268,22 @@ release, it will receive a new version and its changes will be documented.
 The GitHub repository may continue to receive code, documentation, and audit
 updates that postdate the fixed Zenodo version.
 
+Zenodo hosts the released data and preserves the fixed version. GitHub hosts
+the code and living documentation. I maintain the project repository. Older
+Zenodo versions remain independently citable, but I do not provide separate
+software support for every historical version.
+
+### Is there a list of research using the dataset?
+
+I do not currently maintain a separate bibliography of work using the
+dataset. Users may report publications through the GitHub issue tracker so
+that they can be documented in a future update.
+
 ### How can errors be reported?
 
 Errors and documentation questions can be reported through the repository's
 [GitHub issue tracker](https://github.com/KMayer24/Data-Science-Project-Courtlistener-Database-/issues).
 Reports should identify the dataset version, table, and relevant record
-identifier without reproducing unnecessary personal information.
+identifier without reproducing unnecessary personal information. The
+responsible contact is Katharina Mayer, University of Konstanz,
+<Katharina.2.Mayer@uni-konstanz.de>.
