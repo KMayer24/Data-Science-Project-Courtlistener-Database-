@@ -32,6 +32,7 @@ sql/                          Validation, descriptive, and export queries
 python/                       Plotting scripts for the exported results
 cleaned_csv/                  Aggregated query outputs used by the plots
 figures/                      Generated figures
+validation/                   Manual author-attribution audit and results
 build_deposit_db.sh            Builds the isolated submission database
 export_deposit.sh              Creates and packages the data release
 restore_deposit.sh             Restores and validates the deposited files
@@ -44,6 +45,7 @@ upload_zenodo.sh               Resumable, checksum-verified Zenodo upload
 |---|---|
 | [`docs/methods-authorship.md`](docs/methods-authorship.md) | Judge reference set, the four-step author-gender cascade, matching hierarchies, HTML attribution patterns, coverage |
 | [`docs/methods-fjc-linkage.md`](docs/methods-fjc-linkage.md) | Linkage to the FJC appellate Integrated Data Base, docket normalisation, case domains, outcome classification, limitations |
+| [`validation/README.md`](validation/README.md) | Reproducible validation-sample draw, manual annotation rules, scoring procedure, and precision results |
 
 ## Requirements
 
@@ -51,7 +53,7 @@ upload_zenodo.sh               Resumable, checksum-verified Zenodo upload
 |---|---|
 | PostgreSQL | 14 or later (developed with 18.6) |
 | Python | 3.10 or later (developed with 3.13.5) |
-| Python packages | `pandas`, `matplotlib` |
+| Python packages | `pandas`, `matplotlib`; validation additionally uses `numpy`, `psycopg2`, `jupyter`, and optionally `scipy` |
 | Shell tools | `bash`, `bzcat`, `bunzip2` (`bzip2`) |
 
 ## Source data
@@ -318,6 +320,26 @@ The analyses cover:
 The generated aggregate tables and plots are included so that the reported
 descriptive results can be inspected without redistributing the underlying
 CourtListener bulk files.
+
+## Manual validation of author attribution
+
+The complete validation workflow is versioned in [`validation/`](validation/).
+Its notebook draws a deterministic 200-opinion sample from a restored release,
+the annotated CSV records the human decisions, and the scoring script reports
+precision by attribution step with Wilson 95% confidence intervals. Run the
+published annotations with:
+
+```bash
+python3 validation/score_validation_sample.py
+```
+
+The sample contains 196 correct and four incorrect attributions. All four
+errors are upstream structured `author_id` links in step 1. The pooled sample
+precision is 0.980, and the estimate weighted by the four attribution-step
+population sizes is 0.996. See the validation README for the sampling frame,
+manual decision rule, per-step estimates, and reproduction instructions.
+These audit files postdate the fixed Zenodo dataset version and are published
+in this GitHub repository rather than inside the existing Zenodo record.
 
 ## Important limitations
 

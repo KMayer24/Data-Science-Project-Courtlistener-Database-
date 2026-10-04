@@ -126,7 +126,7 @@ author-attribution output, and enforces the canonical FJC identifier order.
 |---|---|
 | `01_unique_person_attribution.sql` | Flags attributions that identify exactly one judge (524,777 of 555,297) and resolves the judge identifier back to its registry |
 | `02_unique_person_attribution_export.sql` | Summary CSVs and the per-opinion export |
-| `03_validation_sample.sql` | 200-opinion manual validation sample, stratified by step, deterministic draw |
+| `03_validation_sample.sql` | Pipeline-side definition of the 200-opinion stratified, deterministic validation draw |
 | `04_author_party_resolved.sql` | Reconstruction of the lost build script for `ext.author_party_resolved` |
 | `05_verify_author_party_resolved.sql` | Proves the reconstruction reproduces the original exactly (0 mismatches) |
 | `06_derived_coverage.sql` | Coverage and integrity checks for the derived layer |
@@ -138,8 +138,11 @@ author-attribution output, and enforces the canonical FJC identifier order.
 
 `03_validation_sample.sql` needs `ext.federal_appeal_opinions` for the text
 excerpts and therefore runs against the source research database, not the
-submission database, which does not carry the 17 GB text table. Its output is
-exported to `export/deposit/`.
+submission database, which does not carry the 17 GB text table. The repository
+audit is generated against the restored publication database by
+[`validation/build_validation_sample.ipynb`](../validation/build_validation_sample.ipynb).
+The notebook, completed manual annotations, scoring script, and precision
+results are documented together in [`validation/`](../validation/).
 
 ## What the submission database deliberately leaves out
 

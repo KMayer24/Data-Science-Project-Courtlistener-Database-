@@ -1,0 +1,5 @@
+step,step_label,stratum_size,n_annotated,n_judged,n_unclear,n_correct,precision,ci_low,ci_high
+1,structured author_id,10234,20,20,0,16,0.8,0.5839782779742401,0.9193436467288
+2,recorded author name,380935,60,60,0,60,1.0,0.9398260695220669,0.9999999999999999
+3,XML author element,11499,60,60,0,60,1.0,0.9398260695220669,0.9999999999999999
+4,HTML attribution formula,122109,60,60,0,60,1.0,0.9398260695220669,0.9999999999999999

@@ -128,7 +128,22 @@ Table 3 summarises the coverage of the four-stage assignment cascade. Because ea
 
 A resolved gender does not imply that the author was identified. The cascade assigns a gender whenever all candidates in the best matching tier share the same recorded gender, which can hold for a tier containing several judges. An individual judge was identified for 524,777 of the 555,297 gender-resolved opinions (94.5%), covering 2,074 judges. The released table marks this subset with `person_unique`, and only it supports judge-level analyses.
 
-These figures measure assignment coverage, not assignment accuracy. Manual validation of a stratified sample is ongoing, so no precision estimate is reported here.
+I assessed assignment accuracy in a manually annotated, stratified sample of
+200 opinions drawn from the 524,777 opinions that identify one person. I
+sampled 20 structured-author-link opinions and 60 opinions from each of the
+three matching steps. Within each step, I ordered opinions by a keyed hash of
+the opinion identifier, making the draw reproducible and independent of court,
+year, gender, tier, and match outcome.
+
+The sample contained 196 correct and four incorrect attributions, with no
+unclear cases. Step 1 precision was 0.800 (Wilson 95% CI: 0.584--0.919); each
+of Steps 2--4 had a precision of 1.000 (Wilson 95% CI: 0.940--1.000). All four
+observed errors were incorrect structured `author_id` links in the upstream
+CourtListener data. None was caused by the name-extraction or matching steps
+in this sample. The pooled sample precision was 0.980, and the estimate
+weighted by the four attribution-step population sizes was 0.996. The sample,
+manual decisions, reproducible draw, and scoring code are available in the
+[`validation` directory](../validation/).
 
 **Table 3.** Opinions resolved at each step of the author-gender assignment cascade. Step-specific counts are mutually exclusive.
 
@@ -151,6 +166,7 @@ These figures measure assignment coverage, not assignment accuracy. Manual valid
 | Final gender table | [`09_create_final_gender_table.sql`](../deposit_pipeline/03_gender_assignment/09_create_final_gender_table.sql) |
 | Judge reference set | [`01_create_fjc_judge_tables.sql`](../deposit_pipeline/02_judge_reference/01_create_fjc_judge_tables.sql), [`03_create_fjc_court_name_map.sql`](../deposit_pipeline/02_judge_reference/03_create_fjc_court_name_map.sql), [`04_create_supplemental_judges.sql`](../deposit_pipeline/02_judge_reference/04_create_supplemental_judges.sql) |
 | `person_unique` flag | [`01_unique_person_attribution.sql`](../deposit_pipeline/05_deposit/01_unique_person_attribution.sql) |
+| Manual validation | [`build_validation_sample.ipynb`](../validation/build_validation_sample.ipynb), [`score_validation_sample.py`](../validation/score_validation_sample.py) |
 
 ## References
 

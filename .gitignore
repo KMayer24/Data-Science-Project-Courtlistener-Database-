@@ -20,10 +20,9 @@ TODO_EPJDS.md
 zenodo_record_metadata.md
 sql/Data_Science_Project_Courlistener-19.pdf
 
-# Local notebook used while designing the validation sample. The canonical,
-# non-interactive release workflow is deposit_pipeline/05_deposit/03_validation_sample.sql
-# plus python/12_score_validation_sample.py.
-python/13_build_validation_sample.ipynb
+# Generated worksheet. The notebook, completed annotations, scoring script,
+# and precision output are versioned together in validation/.
+validation/author_attribution_validation_sample_to_annotate.csv
 
 # CourtListener/FJC bulk data are hundreds of gigabytes and are not tracked.
 import/*.csv

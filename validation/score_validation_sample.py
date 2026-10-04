@@ -1,6 +1,6 @@
 """Score the manual validation sample of author attributions.
 
-Reads the annotated CSV produced by sql/derived/03_validation_sample.sql
+Reads the manually annotated CSV drawn by ``build_validation_sample.ipynb``
 and reports precision per attribution step, with Wilson 95 % confidence
 intervals, plus a corpus-weighted precision over all uniquely attributed
 opinions.
@@ -14,11 +14,10 @@ precision; the corpus-weighted figure uses the stratum sizes carried in
 the file.
 
 Usage:
-    python python/12_score_validation_sample.py \
-        [export/deposit/author_attribution_validation_sample_TO_ANNOTATE.csv]
+    python validation/score_validation_sample.py [annotated-sample.csv]
 
-There is deliberately only ONE sample file: the one that gets annotated is
-the one that gets scored.
+With no argument, the script reads the published annotated sample in this
+directory.
 
 The 'verdict' column must be filled with one of:
     correct | incorrect | unclear
@@ -33,8 +32,9 @@ from pathlib import Path
 import pandas as pd
 
 BASE = Path(__file__).resolve().parents[1]
-DEFAULT_IN = BASE / "export/deposit/author_attribution_validation_sample_TO_ANNOTATE.csv"
-CSV_DIR = BASE / "cleaned_csv"
+VALIDATION_DIR = BASE / "validation"
+DEFAULT_IN = VALIDATION_DIR / "author_attribution_validation_sample_annotated.csv"
+DEFAULT_OUT = VALIDATION_DIR / "author_attribution_validation_precision.csv"
 
 STEP_LABELS = {
     1: "structured author_id",
@@ -44,6 +44,7 @@ STEP_LABELS = {
 }
 
 VALID_VERDICTS = {"correct", "incorrect", "unclear"}
+VALID_ERROR_SOURCES = {"courtlistener", "extraction", "matching"}
 
 
 def wilson(successes: int, total: int, z: float = 1.96):
@@ -65,7 +66,14 @@ def main() -> None:
 
     df = pd.read_csv(path)
 
-    required = {"opinion_id", "attribution_step", "stratum_size", "verdict"}
+    required = {
+        "opinion_id",
+        "attribution_step",
+        "stratum_size",
+        "verdict",
+        "correct_judge_if_incorrect",
+        "error_source",
+    }
     missing = required - set(df.columns)
     if missing:
         raise SystemExit(f"Missing columns in {path}: {sorted(missing)}")
@@ -77,6 +85,27 @@ def main() -> None:
         raise SystemExit(
             f"Unexpected values in 'verdict': {sorted(bad)}. "
             f"Allowed: {sorted(VALID_VERDICTS)}"
+        )
+
+    if df["opinion_id"].duplicated().any():
+        duplicate_ids = df.loc[df["opinion_id"].duplicated(), "opinion_id"].tolist()
+        raise SystemExit(f"Duplicate opinion_id values: {duplicate_ids}")
+
+    incorrect = df["verdict"] == "incorrect"
+    missing_judge = incorrect & df["correct_judge_if_incorrect"].isna()
+    missing_source = incorrect & df["error_source"].isna()
+    if missing_judge.any() or missing_source.any():
+        raise SystemExit(
+            "Every incorrect row must provide correct_judge_if_incorrect "
+            "and error_source"
+        )
+
+    sources = df.loc[incorrect, "error_source"].astype("string").str.strip().str.lower()
+    bad_sources = set(sources.dropna().unique()) - VALID_ERROR_SOURCES
+    if bad_sources:
+        raise SystemExit(
+            f"Unexpected error_source values: {sorted(bad_sources)}. "
+            f"Allowed: {sorted(VALID_ERROR_SOURCES)}"
         )
 
     n_total = len(df)
@@ -141,10 +170,9 @@ def main() -> None:
     if len(usable) < len(res):
         print("  (weighted figure covers only the steps with judged rows)")
 
-    CSV_DIR.mkdir(exist_ok=True)
-    out = CSV_DIR / "author_attribution_validation_precision.csv"
-    res.to_csv(out, index=False)
-    print(f"\nWritten: {out}")
+    DEFAULT_OUT.parent.mkdir(exist_ok=True)
+    res.to_csv(DEFAULT_OUT, index=False)
+    print(f"\nWritten: {DEFAULT_OUT}")
 
 
 if __name__ == "__main__":

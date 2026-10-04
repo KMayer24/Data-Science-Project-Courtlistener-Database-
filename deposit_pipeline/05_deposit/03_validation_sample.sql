@@ -24,7 +24,7 @@
 --   The allocation is not proportional to stratum size, because the aim
 --   is a precision estimate per step rather than a corpus average. The
 --   stratum sizes travel with the file so a corpus-weighted precision
---   can still be computed (python/12_score_validation_sample.py).
+--   can still be computed (validation/score_validation_sample.py).
 --
 --   Only attributions that resolve to exactly ONE judge are sampled,
 --   because those are the ones a human can check against the text.
@@ -37,9 +37,11 @@
 --   across plans, parallelism and PostgreSQL versions.
 --
 -- Output:
---   ext.author_attribution_validation_sample  (kept, so the drawn
---       sample is stable across re-exports)
---   export/deposit/author_attribution_validation_sample.csv
+--   ext.author_attribution_validation_sample
+--
+-- The repository audit files are generated from the restored publication
+-- database by validation/build_validation_sample.ipynb. That notebook uses
+-- the same keyed-hash ordering and records the completed manual annotations.
 --
 -- Prerequisite: 01_unique_person_attribution.sql
 -- ============================================================
@@ -159,6 +161,6 @@ ORDER BY d.attribution_step, d.opinion_id;
 ALTER TABLE ext.author_attribution_validation_sample ADD PRIMARY KEY (opinion_id);
 
 COMMENT ON TABLE ext.author_attribution_validation_sample IS
-'Stratified manual validation sample (50 uniquely attributed opinions per attribution step, seed 0.42) used to report precision per step.';
+'Stratified manual validation sample (20/60/60/60 opinions across attribution steps 1-4, keyed-hash salt epjds-validation-2026) used to report precision per step.';
 
 COMMIT;
