@@ -38,7 +38,7 @@
 -- Note on the final year: the snapshot is dated 2026-03-31, so 2026 is a
 -- partial year. The plotting script excludes it and the caption says so.
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/clusters_by_year_tier.csv
+\o ./cleaned_csv/clusters_by_year_tier.csv
 COPY (
   SELECT
       CASE
@@ -62,7 +62,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/clusters_by_year_provenance.csv
+\o ./cleaned_csv/clusters_by_year_provenance.csv
 COPY (
   SELECT
       EXTRACT(YEAR FROM oc.date_filed)::int AS year,

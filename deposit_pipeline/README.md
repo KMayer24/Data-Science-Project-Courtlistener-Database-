@@ -18,19 +18,20 @@ counts and deterministic-key checks are enforced by the rebuild command.
 | `courtcase_db`, shared cluster, port 5432 | Source research database. Read-only. |
 | `courtlistener_deposit`, own instance, port 5435 | The submission database. Everything the paper deposits is built here. |
 
-The submission database runs in its own PostgreSQL instance under
-`/data/workspace/kmayer/pg_deposit`, because the shared cluster grants no
-`CREATEDB`. Separate process, separate files, separate port — the two
-cannot contaminate each other.
+The submission database runs in its own PostgreSQL instance. Set
+`DEPOSIT_DATA` to a local PostgreSQL data directory; the repository default is
+`.pg_deposit` at its root. Separate process, separate files, separate port —
+the two cannot contaminate each other.
 
 ```bash
 # start (it does not survive a reboot)
-/usr/lib/postgresql/18/bin/pg_ctl -D /data/workspace/kmayer/pg_deposit \
-  -l /data/workspace/kmayer/pg_deposit/server.log \
-  -o "-p 5435 -k /data/workspace/kmayer/pg_deposit" start
+DEPOSIT_DATA=/path/to/pg_deposit
+/usr/lib/postgresql/18/bin/pg_ctl -D "$DEPOSIT_DATA" \
+  -l "$DEPOSIT_DATA/server.log" \
+  -o "-p 5435 -k $DEPOSIT_DATA" start
 
 # connect
-psql -h /data/workspace/kmayer/pg_deposit -p 5435 -d courtlistener_deposit
+psql -h "$DEPOSIT_DATA" -p 5435 -d courtlistener_deposit
 ```
 
 ## Stages
@@ -148,7 +149,7 @@ results are documented together in [`validation/`](../validation/).
 
 | Not copied | Why |
 |---|---|
-| `public.search_opinion` | 160 GB. Deposit record B, pending the Zenodo/GESIS decision. Add with `--opinion-text`. |
+| `public.search_opinion` | 160 GB. Deposited as multipart source data. Add with `--opinion-text` when rebuilding the complete release. |
 | `ext.federal_appeal_opinions` | 17 GB of opinion text, duplicated from `public.search_opinion`. The metadata twin is deposited. |
 | `ext.federal_appeals_opinion_header_text` | Materialised view with no build script. |
 | `ext.opinion_legal_domain` | No build script, and 42 % of rows carry neither domain nor source. |

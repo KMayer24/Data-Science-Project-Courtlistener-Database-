@@ -55,8 +55,15 @@ upload_zenodo.sh               Resumable, checksum-verified Zenodo upload
 |---|---|
 | PostgreSQL | 14 or later (developed with 18.6) |
 | Python | 3.10 or later (developed with 3.13.5) |
-| Python packages | `pandas`, `matplotlib`; validation additionally uses `numpy`, `psycopg2`, `jupyter`, and optionally `scipy` |
+| Python packages | `pandas`, `matplotlib`; the validation notebook additionally uses `psycopg2`, `jupyter`, and optionally `scipy` |
 | Shell tools | `bash`, `bzcat`, `bunzip2` (`bzip2`) |
+
+Install the packages needed to regenerate the committed figures and score the
+published audit:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
 
 ## Source data
 
@@ -197,6 +204,27 @@ layer and constructing the smaller submission database.
 `fjc_appeal_id` is assigned by a total ordering over all normalised FJC fields,
 and the rebuild fails if the generated IDs do not follow that ordering.
 
+### Import adaptations
+
+The project schema is not a verbatim copy of CourtListener's published schema.
+The changes are documented in `import/schema_final.sql` and implemented by
+`import/load_core.sh`:
+
+- CourtListener CSV imports use backslash escaping (`ESCAPE E'\\\\'`), as
+  required by the source files.
+- The compressed FJC district-court export is passed through Python's CSV
+  reader before import. This preserves quoted content while converting quoted
+  empty strings to unquoted empty fields, which PostgreSQL imports as
+  `NULL`.
+- The FJC fields `office`, `transfer_office`, and `transfer_origin` use
+  `varchar(3)`, matching their three-character codes.
+- The schema adds foreign keys from FJC `circuit_id` and `district_id` to
+  the court register. In total it defines 24 foreign keys for the retained
+  tables.
+
+These changes make the retained exports import consistently and expose the
+relationships used by the validation and derived layers.
+
 ### 4. Build and export the release package
 
 The release database is kept in a separate PostgreSQL instance. The build
@@ -284,9 +312,32 @@ search_opinionscited.*_opinion_id -> search_opinion.id
 search_citation.cluster_id       -> search_opinioncluster.id
 ```
 
+The main relationships are:
+
+```mermaid
+flowchart LR
+  court[Court] --> docket[Docket / case]
+  docket --> cluster[Opinion cluster / decision]
+  cluster --> opinion[Opinion text]
+  opinion -->|cites| cited[Opinion text]
+  person[Person / judge] --> position[Judicial position]
+  position --> court
+  person -->|author or panel member| opinion
+  docket --> fjc[FJC district-court record]
+```
+
 ## Validation
 
-Run the core row-count and foreign-key checks after import:
+Run every documented row-count, relationship, completeness, and derived-layer
+check after import:
+
+```bash
+./run_validation.sh
+```
+
+It writes its report to `validation_report/validation_report.txt`.
+Use `./run_validation.sh --core` or `--derived` to run only one layer.
+The individual core checks can also be run directly:
 
 ```bash
 psql -p 5432 -d courtcase_db -f sql/01_counts.sql
@@ -298,12 +349,30 @@ identifiers in the major court, docket, opinion, cluster, and citation tables.
 The excluded citation references remain available as small diagnostic files in
 `import/`.
 
+### Completeness and text availability
+
+The exported completeness tables and figures document field-level coverage:
+
+- [`data_completeness_overview.csv`](cleaned_csv/data_completeness_overview.csv)
+  and [`data_completeness_table_level.csv`](cleaned_csv/data_completeness_table_level.csv);
+- [`core_completeness_by_table.png`](figures/core_completeness_by_table.png);
+- [`search_opinion_text_audit_summary.csv`](cleaned_csv/search_opinion_text_audit_summary.csv)
+  and [`search_opinion_text_audit.png`](figures/search_opinion_text_audit.png).
+
+For example, position start dates are present for 98.31% of positions,
+recorded gender for 69.30% of people, date of birth for 45.47%, method of
+selection for 21.96%, and religion for 2.62%. For the 10,745,929 opinions,
+`html_with_citations` is non-empty for 99.86%; 346 opinions have no text in
+any of the audited text fields. The audit also reports coverage for
+`author_str`, `html`, `plain_text`, and `xml_harvard`.
+
 ## Analysis workflow
 
 SQL scripts query the PostgreSQL database and write aggregated CSV files to
 `cleaned_csv/`. Python scripts read these exports and generate the figures.
 
-Example:
+Run export queries from the repository root; their output paths are relative
+to that directory. Example:
 
 ```bash
 psql -p 5432 -d courtcase_db -f sql/04_descriptive_stats_basic_export.sql
@@ -371,4 +440,6 @@ schema, SQL, Python, and shell scripts, and this README, are available under
 the [MIT License](LICENSE-CODE.md). The derived summary tables in `cleaned_csv/`
 and the figures in `figures/` are available under
 [CC BY 4.0](LICENSE-DATA.md). These licenses do not apply to the original
-CourtListener source files.
+CourtListener source files. Citation metadata are provided in
+[`CITATION.cff`](CITATION.cff); it directs users to cite the fixed Zenodo
+dataset.

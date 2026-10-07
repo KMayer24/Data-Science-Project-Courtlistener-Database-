@@ -1,14 +1,14 @@
 -- 06_judge_profiles_export.sql
 -- Export judge/person profile statistics to CSV files
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_total_persons.csv
+\o ./cleaned_csv/judge_total_persons.csv
 COPY (
   SELECT COUNT(*) AS total_persons
   FROM public.people_db_person
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_political_party_distribution.csv
+\o ./cleaned_csv/judge_political_party_distribution.csv
 COPY (
   SELECT
     CASE
@@ -26,7 +26,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_degree_level_distribution.csv
+\o ./cleaned_csv/judge_degree_level_distribution.csv
 COPY (
   SELECT
     CASE
@@ -44,7 +44,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_top25_schools.csv
+\o ./cleaned_csv/judge_top25_schools.csv
 COPY (
   SELECT s.name,
          COUNT(e.id) AS education_count
@@ -57,7 +57,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_positions_per_person_summary.csv
+\o ./cleaned_csv/judge_positions_per_person_summary.csv
 COPY (
   SELECT MIN(position_count) AS min_positions_per_person,
          MAX(position_count) AS max_positions_per_person,
@@ -71,7 +71,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_education_per_person_summary.csv
+\o ./cleaned_csv/judge_education_per_person_summary.csv
 COPY (
   SELECT MIN(education_count) AS min_education_per_person,
          MAX(education_count) AS max_education_per_person,
@@ -85,7 +85,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_gender_distribution.csv
+\o ./cleaned_csv/judge_gender_distribution.csv
 COPY (
   SELECT
     CASE
@@ -103,7 +103,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_activity_status.csv
+\o ./cleaned_csv/judge_activity_status.csv
 COPY (
   SELECT activity_status, COUNT(*) AS n
   FROM (
@@ -127,7 +127,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_gender_by_activity_status.csv
+\o ./cleaned_csv/judge_gender_by_activity_status.csv
 COPY (
   SELECT gender_clean, activity_status, COUNT(*) AS n
   FROM (
@@ -155,7 +155,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_currently_active_judicially.csv
+\o ./cleaned_csv/judge_currently_active_judicially.csv
 COPY (
   SELECT COUNT(DISTINCT person_id) AS persons_currently_active_judicially
   FROM public.people_db_position
@@ -172,7 +172,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/judge_missingness.csv
+\o ./cleaned_csv/judge_missingness.csv
 COPY (
   SELECT
       COUNT(*) AS total_rows,

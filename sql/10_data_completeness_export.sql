@@ -1,7 +1,7 @@
 -- 10_data_completeness_export.sql
 -- Export completeness overview to CSV
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/data_completeness_overview.csv
+\o ./cleaned_csv/data_completeness_overview.csv
 COPY (
   SELECT
       table_name,
@@ -15,7 +15,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/data_completeness_table_level.csv
+\o ./cleaned_csv/data_completeness_table_level.csv
 COPY (
   SELECT
       table_name,

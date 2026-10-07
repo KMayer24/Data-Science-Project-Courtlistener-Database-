@@ -1,4 +1,4 @@
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/active_judges_by_gender_party.csv
+\o ./cleaned_csv/active_judges_by_gender_party.csv
 COPY (
   WITH active_judges AS (
       SELECT DISTINCT person_id

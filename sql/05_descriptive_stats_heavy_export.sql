@@ -1,7 +1,7 @@
 -- 05_descriptive_stats_heavy_export.sql
 -- Export heavy descriptive statistics directly to CSV files
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/opinions_per_cluster_summary.csv
+\o ./cleaned_csv/opinions_per_cluster_summary.csv
 COPY (
   SELECT MIN(opinion_count) AS min_opinions_per_cluster,
          MAX(opinion_count) AS max_opinions_per_cluster,
@@ -14,7 +14,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/citations_per_cluster_summary.csv
+\o ./cleaned_csv/citations_per_cluster_summary.csv
 COPY (
   SELECT MIN(citation_count) AS min_citations_per_cluster,
          MAX(citation_count) AS max_citations_per_cluster,
@@ -27,7 +27,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/outdegree_summary.csv
+\o ./cleaned_csv/outdegree_summary.csv
 COPY (
   SELECT MIN(outdegree) AS min_outdegree,
          MAX(outdegree) AS max_outdegree,
@@ -40,7 +40,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/panel_size_summary.csv
+\o ./cleaned_csv/panel_size_summary.csv
 COPY (
   SELECT MIN(panel_size) AS min_panel_size,
          MAX(panel_size) AS max_panel_size,
@@ -53,7 +53,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/opinions_without_cluster.csv
+\o ./cleaned_csv/opinions_without_cluster.csv
 COPY (
   SELECT COUNT(*) AS opinions_without_cluster
   FROM public.search_opinion
@@ -61,7 +61,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/clusters_without_opinions.csv
+\o ./cleaned_csv/clusters_without_opinions.csv
 COPY (
   SELECT COUNT(*) AS clusters_without_opinions
   FROM public.search_opinioncluster oc
@@ -71,7 +71,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/dockets_without_clusters.csv
+\o ./cleaned_csv/dockets_without_clusters.csv
 COPY (
   SELECT COUNT(*) AS dockets_without_clusters
   FROM public.search_docket d
@@ -81,7 +81,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/top20_courts_by_dockets.csv
+\o ./cleaned_csv/top20_courts_by_dockets.csv
 COPY (
   SELECT c.full_name,
          COUNT(d.id) AS docket_count
@@ -94,7 +94,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/top20_clusters_by_citations.csv
+\o ./cleaned_csv/top20_clusters_by_citations.csv
 COPY (
   SELECT oc.id,
          oc.case_name,

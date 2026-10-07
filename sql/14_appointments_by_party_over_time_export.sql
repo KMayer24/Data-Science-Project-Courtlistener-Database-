@@ -3,7 +3,7 @@
 -- Joins: people_db_position (date_start) -> people_db_politicalaffiliation
 -- Uses position start date as proxy for appointment year.
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/appointments_by_party_over_time.csv
+\o ./cleaned_csv/appointments_by_party_over_time.csv
 COPY (
   WITH person_party AS (
       SELECT

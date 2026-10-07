@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-BASE = Path("/data/workspace/kmayer/courtlistener")
+BASE = Path(__file__).resolve().parents[1]
 CSV_PATH = BASE / "cleaned_csv" / "data_completeness_overview.csv"
 TABLE_LEVEL_PATH = BASE / "cleaned_csv" / "data_completeness_table_level.csv"
 TEXT_AUDIT_PATH = BASE / "cleaned_csv" / "search_opinion_text_audit_summary.csv"

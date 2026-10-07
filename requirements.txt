@@ -1,0 +1,6 @@
+# Plotting and validation dependencies for the documented workflow.
+pandas
+matplotlib
+psycopg2-binary
+jupyter
+scipy

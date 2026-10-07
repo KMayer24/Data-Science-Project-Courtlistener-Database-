@@ -1,7 +1,7 @@
 -- 04_descriptive_stats_basic_export.sql
 -- Export core descriptive statistics directly to CSV files
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/core_table_sizes.csv
+\o ./cleaned_csv/core_table_sizes.csv
 COPY (
   SELECT 'search_court' AS table_name, COUNT(*) AS row_count FROM public.search_court
   UNION ALL
@@ -38,7 +38,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/opinion_type_distribution.csv
+\o ./cleaned_csv/opinion_type_distribution.csv
 COPY (
   SELECT type, COUNT(*) AS n
   FROM public.search_opinion
@@ -47,7 +47,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/precedential_status_distribution.csv
+\o ./cleaned_csv/precedential_status_distribution.csv
 COPY (
   SELECT precedential_status, COUNT(*) AS n
   FROM public.search_opinioncluster
@@ -56,7 +56,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/docket_source_distribution.csv
+\o ./cleaned_csv/docket_source_distribution.csv
 COPY (
   SELECT source, COUNT(*) AS n
   FROM public.search_docket
@@ -65,7 +65,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/docket_jurisdiction_type_distribution.csv
+\o ./cleaned_csv/docket_jurisdiction_type_distribution.csv
 COPY (
   SELECT jurisdiction_type, COUNT(*) AS n
   FROM public.search_docket
@@ -74,7 +74,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/position_type_distribution.csv
+\o ./cleaned_csv/position_type_distribution.csv
 COPY (
   SELECT position_type, COUNT(*) AS n
   FROM public.people_db_position
@@ -83,7 +83,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/political_party_distribution.csv
+\o ./cleaned_csv/political_party_distribution.csv
 COPY (
   SELECT political_party, COUNT(*) AS n
   FROM public.people_db_politicalaffiliation
@@ -92,7 +92,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/opinioncluster_by_year.csv
+\o ./cleaned_csv/opinioncluster_by_year.csv
 COPY (
   SELECT EXTRACT(YEAR FROM date_filed) AS filing_year,
          COUNT(*) AS n
@@ -103,7 +103,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/dockets_by_year.csv
+\o ./cleaned_csv/dockets_by_year.csv
 COPY (
   SELECT EXTRACT(YEAR FROM date_filed) AS filing_year,
          COUNT(*) AS n
@@ -114,7 +114,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/positions_by_start_year.csv
+\o ./cleaned_csv/positions_by_start_year.csv
 COPY (
   SELECT EXTRACT(YEAR FROM date_start) AS start_year,
          COUNT(*) AS n
@@ -125,7 +125,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/education_by_degree_year.csv
+\o ./cleaned_csv/education_by_degree_year.csv
 COPY (
   SELECT degree_year, COUNT(*) AS n
   FROM public.people_db_education
@@ -135,7 +135,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/missingness_search_opinion.csv
+\o ./cleaned_csv/missingness_search_opinion.csv
 COPY (
   SELECT
       COUNT(*) AS total_rows,
@@ -148,7 +148,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/missingness_search_opinioncluster.csv
+\o ./cleaned_csv/missingness_search_opinioncluster.csv
 COPY (
   SELECT
       COUNT(*) AS total_rows,
@@ -160,7 +160,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/missingness_search_docket.csv
+\o ./cleaned_csv/missingness_search_docket.csv
 COPY (
   SELECT
       COUNT(*) AS total_rows,
@@ -172,7 +172,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/missingness_people_db_position.csv
+\o ./cleaned_csv/missingness_people_db_position.csv
 COPY (
   SELECT
       COUNT(*) AS total_rows,
@@ -184,7 +184,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/missingness_people_db_education.csv
+\o ./cleaned_csv/missingness_people_db_education.csv
 COPY (
   SELECT
       COUNT(*) AS total_rows,

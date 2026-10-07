@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite the archived dataset."
+title: "CourtListener Research Database: code and documentation"
+type: software
+authors:
+  - family-names: Mayer
+    given-names: Katharina
+repository-code: "https://github.com/KMayer24/Data-Science-Project-Courtlistener-Database-"
+license: MIT
+preferred-citation:
+  type: dataset
+  title: "U.S. Judges, Judicial Careers, and Court Opinions: A CourtListener Database Snapshot (2026-03-31) with Opinion Authorship and Appellate Case Linkage"
+  authors:
+    - family-names: Mayer
+      given-names: Katharina
+  doi: 10.5281/zenodo.23063945

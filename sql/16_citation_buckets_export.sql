@@ -3,7 +3,7 @@
 -- Bucketed into: 0, 1-5, 6-20, 21-100, 100+.
 -- Restricted to 1950-2010 to avoid right-censoring bias for recent opinions.
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/citation_buckets.csv
+\o ./cleaned_csv/citation_buckets.csv
 COPY (
   SELECT
       CASE

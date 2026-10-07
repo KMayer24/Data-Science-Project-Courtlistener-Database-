@@ -9,7 +9,7 @@
 -- The output intentionally has no header because the plotting script assigns
 -- the column names gender, decade, and n when reading the file.
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/appointments_by_gender_decade.csv
+\o ./cleaned_csv/appointments_by_gender_decade.csv
 COPY (
     WITH decade_counts AS (
         SELECT

@@ -1,7 +1,7 @@
 -- 09_judge_activity_with_party_export.sql
 -- Export top judge activity tables enriched with political party
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/top25_judges_by_authored_opinions_with_party.csv
+\o ./cleaned_csv/top25_judges_by_authored_opinions_with_party.csv
 COPY (
   WITH person_party AS (
       SELECT
@@ -31,7 +31,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/top25_judges_by_panel_participation_with_party.csv
+\o ./cleaned_csv/top25_judges_by_panel_participation_with_party.csv
 COPY (
   WITH person_party AS (
       SELECT
@@ -61,7 +61,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/top25_judges_by_joined_opinions_with_party.csv
+\o ./cleaned_csv/top25_judges_by_joined_opinions_with_party.csv
 COPY (
   WITH person_party AS (
       SELECT

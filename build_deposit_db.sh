@@ -12,13 +12,13 @@
 #                          process, started under the user's own account
 #                          because the shared cluster grants no CREATEDB.
 #
-# Example used to manage the submission instance on the project server
-# (set DEPOSIT_DATA and DST_PORT for a different installation):
-#   start  /usr/lib/postgresql/18/bin/pg_ctl -D /data/workspace/kmayer/pg_deposit \
-#            -l /data/workspace/kmayer/pg_deposit/server.log \
-#            -o "-p 5435 -k /data/workspace/kmayer/pg_deposit" start
-#   stop   /usr/lib/postgresql/18/bin/pg_ctl -D /data/workspace/kmayer/pg_deposit stop
-#   psql   psql -h /data/workspace/kmayer/pg_deposit -p 5435 -d courtlistener_deposit
+# Example for a local submission instance (set DEPOSIT_DATA and DST_PORT
+# for a different installation):
+#   start  /usr/lib/postgresql/18/bin/pg_ctl -D /path/to/pg_deposit \
+#            -l /path/to/pg_deposit/server.log \
+#            -o "-p 5435 -k /path/to/pg_deposit" start
+#   stop   /usr/lib/postgresql/18/bin/pg_ctl -D /path/to/pg_deposit stop
+#   psql   psql -h /path/to/pg_deposit -p 5435 -d courtlistener_deposit
 #   It does not survive a reboot; start it again when you need it.
 #
 # Schemas inside the submission database:
@@ -27,9 +27,9 @@
 #   deposit  the deposit-facing layer: neutral names, intermediates gone.
 #
 # Not copied, on purpose:
-#   public.search_opinion                    160 GB. Deposit record B,
-#                                            pending the Zenodo/GESIS
-#                                            decision. Use --opinion-text.
+#   public.search_opinion                    160 GB. Deposited separately
+#                                            as multipart source data. Use
+#                                            --opinion-text to include it.
 #   ext.federal_appeal_opinions              17 GB of text, duplicated
 #                                            from public.search_opinion
 #   ext.federal_appeals_opinion_header_text  materialised view, no script
@@ -52,9 +52,9 @@ SRC_DB="${SRC_DB:-courtcase_db}"
 SRC_PORT="${SRC_PORT:-5432}"
 SRC_EXT_SCHEMA="${SRC_EXT_SCHEMA:-ext_release}"
 DST_DB="${DST_DB:-courtlistener_deposit}"
-DEPOSIT_DATA="${DEPOSIT_DATA:-/data/workspace/kmayer/pg_deposit}"
-DST_PORT="${DST_PORT:-5435}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DEPOSIT_DATA="${DEPOSIT_DATA:-$SCRIPT_DIR/.pg_deposit}"
+DST_PORT="${DST_PORT:-5435}"
 PIPELINE_DIR="$SCRIPT_DIR/deposit_pipeline/05_deposit"
 MODE="${1:---all}"
 

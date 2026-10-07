@@ -1,6 +1,6 @@
 -- 11_search_opinion_text_audit_export.sql
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/search_opinion_text_audit_summary.csv
+\o ./cleaned_csv/search_opinion_text_audit_summary.csv
 COPY (
   SELECT *
   FROM (
@@ -109,7 +109,7 @@ COPY (
 ) TO STDOUT WITH CSV HEADER;
 \o
 
-\o /data/workspace/kmayer/courtlistener/cleaned_csv/search_opinion_text_audit_examples.csv
+\o ./cleaned_csv/search_opinion_text_audit_examples.csv
 COPY (
   SELECT
       id,

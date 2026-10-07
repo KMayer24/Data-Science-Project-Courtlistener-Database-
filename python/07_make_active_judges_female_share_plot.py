@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-BASE = Path("/data/workspace/kmayer/courtlistener")
+BASE = Path(__file__).resolve().parents[1]
 CSV_DIR = BASE / "cleaned_csv"
 FIG_DIR = BASE / "figures"
 FIG_DIR.mkdir(exist_ok=True)

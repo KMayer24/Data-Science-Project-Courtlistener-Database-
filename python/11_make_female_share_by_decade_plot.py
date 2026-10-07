@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.lines import Line2D
 
-BASE = Path("/data/workspace/kmayer/courtlistener")
+BASE = Path(__file__).resolve().parents[1]
 CSV_DIR = BASE / "cleaned_csv"
 FIG_DIR = BASE / "figures"
 FIG_DIR.mkdir(exist_ok=True)
