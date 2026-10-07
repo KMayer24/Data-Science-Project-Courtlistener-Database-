@@ -318,12 +318,14 @@ The main relationships are:
 flowchart LR
   court[Court] --> docket[Docket / case]
   docket --> cluster[Opinion cluster / decision]
+  docket --> fjc[FJC district-court record]
   cluster --> opinion[Opinion text]
+  cluster --> citation[Reporter citation]
   opinion -->|cites| cited[Opinion text]
   person[Person / judge] --> position[Judicial position]
   position --> court
-  person -->|author or panel member| opinion
-  docket --> fjc[FJC district-court record]
+  person -->|author| opinion
+  person -->|panel member| cluster
 ```
 
 ## Validation
