@@ -3,20 +3,25 @@
 This release contains source tables and project-created derived tables. They
 do not all have the same rights statement.
 
-## CourtListener and FJC source tables
+## CourtListener source tables
 
 Files named `public_*.csv.bz2`, the `public_search_opinion.csv.bz2.part*`
-files that make up the opinion archive, `deposit_fjc_appellate_raw_*.csv.bz2`,
-`deposit_judge_biography.csv.bz2`, and `deposit_judge_service.csv.bz2`
-reproduce source data distributed by CourtListener, including records from
-the Federal Judicial Center. CourtListener describes its bulk data as free of
-known copyright restrictions and marks it with the Creative Commons Public
-Domain Mark 1.0:
+files that make up the opinion archive reproduce source data distributed by
+CourtListener. CourtListener describes its bulk data as free of known copyright
+restrictions and marks it with the Creative Commons Public Domain Mark 1.0:
 
 https://creativecommons.org/publicdomain/mark/1.0/
 
 The Public Domain Mark is a rights-status statement, not a license granted by
-the author of this release. Source provenance remains recorded in the data and
+the author of this release.
+
+## Federal Judicial Center source records
+
+Files named `deposit_fjc_appellate_raw_*.csv.bz2`,
+`deposit_judge_biography.csv.bz2`, and `deposit_judge_service.csv.bz2`
+reproduce records obtained directly from the Federal Judicial Center. They are
+not CourtListener bulk files. This release makes no new licence grant for these
+source records; their provenance remains recorded in the data and
 documentation.
 
 ## Project-created derived tables

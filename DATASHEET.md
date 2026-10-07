@@ -246,10 +246,12 @@ as one stream. The full package contains 50 files totalling 58.53 GB.
 
 ### What licenses and rights statements apply?
 
-CourtListener and FJC source tables carry the Creative Commons Public Domain
-Mark 1.0 used by CourtListener. Project-created derived data are licensed
-under CC BY 4.0. Code and project-authored technical documentation are
-licensed under the MIT License. The file-level mapping is documented in
+CourtListener source tables carry the Creative Commons Public Domain Mark 1.0
+used by CourtListener. Source records obtained directly from the Federal
+Judicial Center retain their applicable source status; this release makes no
+new licence grant for them. Project-created derived data are licensed under CC
+BY 4.0. Code and project-authored technical documentation are licensed under
+the MIT License. The file-level mapping is documented in
 [`DATA_LICENSES.md`](DATA_LICENSES.md).
 
 ### Are there access restrictions?
