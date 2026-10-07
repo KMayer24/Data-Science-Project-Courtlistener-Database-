@@ -430,10 +430,14 @@ in this GitHub repository rather than inside the existing Zenodo record.
 
 ## Data licensing and attribution
 
-This repository does not redistribute the CourtListener bulk files. Users
-should obtain them from CourtListener and follow the applicable source-data
-terms. CourtListener source documentation and bulk-data access are available
-at <https://www.courtlistener.com/help/api/bulk-data/>. FJC Integrated Database
+This GitHub repository does not contain the original CourtListener bulk files.
+The fixed Zenodo dataset release includes the selected source tables and
+derived data; source tables retain their applicable source-data status and
+attribution. Project-created code and documentation in this repository are
+licensed separately as described below.
+
+CourtListener source documentation and bulk-data access are available at
+<https://www.courtlistener.com/help/api/bulk-data/>. FJC Integrated Database
 documentation is available from the
 [Federal Judicial Center](https://www.fjc.gov/research/idb).
 
